@@ -1,20 +1,3 @@
-"""
-Data Cleaner Module
-===================
-Handles data quality issues in real-world sales data.
-
-Business Purpose:
-- Ensures data accuracy for reliable business decisions
-- Prevents incorrect revenue reporting due to data quality issues
-- Documents every cleaning decision for audit and transparency
-
-Key Principle:
-Data quality directly impacts business decisions. Bad data = bad decisions.
-Every cleaning step must have a clear business justification.
-
-Author: Data Analytics Team
-"""
-
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -22,37 +5,10 @@ from typing import Tuple
 
 
 class DataCleaner:
-    """
-    Handles all data cleaning operations with business-focused reasoning.
-
-    Philosophy:
-    - Only clean when there's a clear business reason
-    - Document what was changed and why
-    - Preserve as much data as possible
-    """
-
     def __init__(self):
         self.cleaning_log = []
 
     def clean_data(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, list]:
-        """
-        Execute the complete data cleaning pipeline.
-
-        Parameters:
-        -----------
-        df : pd.DataFrame
-            Raw sales data with potential quality issues
-
-        Returns:
-        --------
-        Tuple[pd.DataFrame, list]
-            Cleaned dataframe and log of all changes made
-
-        Business Impact:
-        ---------------
-        Clean data ensures accurate revenue reporting, reliable forecasting,
-        and trustworthy business insights for decision-making.
-        """
         df_clean = df.copy()
         original_count = len(df_clean)
 
@@ -73,19 +29,6 @@ class DataCleaner:
         return df_clean, self.cleaning_log
 
     def _standardize_dates(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Convert all date formats to a consistent standard format.
-
-        Business Reason:
-        ---------------
-        Inconsistent date formats break time-series analysis and forecasting.
-        Business reports must show accurate monthly/quarterly trends.
-
-        Common Issues:
-        - Excel date formats vs string formats
-        - Various date separators (/, -, .)
-        - Different date orderings (MM/DD/YYYY vs DD/MM/YYYY)
-        """
         self._log("Standardizing date formats...")
 
         try:
@@ -104,23 +47,6 @@ class DataCleaner:
         return df
 
     def _handle_missing_values(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Handle missing values based on business logic.
-
-        Business Reasoning:
-        ------------------
-        1. Missing Quantity: Cannot determine order value → Remove
-           Impact: Prevents understating sales volume
-
-        2. Missing Price: Cannot calculate revenue → Remove
-           Impact: Prevents revenue calculation errors
-
-        3. Missing Revenue: Can be recalculated from Quantity × Price
-           Impact: Recovers potentially valid orders
-
-        4. Missing Region/Customer_Type: Use 'Unknown' category
-           Impact: Preserves order data while acknowledging uncertainty
-        """
         self._log("Handling missing values...")
 
         critical_cols = ['Order_ID', 'Product', 'Category']
@@ -157,21 +83,6 @@ class DataCleaner:
         return df
 
     def _remove_duplicates(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Remove duplicate orders to prevent double-counting.
-
-        Business Reason:
-        ---------------
-        Duplicate orders artificially inflate revenue and volume metrics.
-        This leads to:
-        - Overstated performance
-        - Incorrect forecasts
-        - Misallocated resources
-
-        Strategy:
-        - Keep the first occurrence of each order
-        - Duplicates are identified by Order_ID
-        """
         before_count = len(df)
         df = df.drop_duplicates(subset=['Order_ID'], keep='first')
         removed = before_count - len(df)
@@ -183,26 +94,6 @@ class DataCleaner:
         return df
 
     def _fix_revenue_calculations(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Verify and correct revenue calculations.
-
-        Business Reason:
-        ---------------
-        Incorrect revenue figures can result from:
-        - System bugs
-        - Manual data entry errors
-        - Currency conversion issues
-        - Discount application errors
-
-        Impact: Revenue is the most critical metric. Any error here
-        directly affects financial reporting and business decisions.
-
-        Method:
-        - Calculate expected revenue: Quantity × Price
-        - Compare with recorded revenue
-        - Flag discrepancies > 1% (allows for rounding)
-        - Recalculate when discrepancies found
-        """
         self._log("Validating revenue calculations...")
 
         df['Expected_Revenue'] = df['Quantity'] * df['Price']
@@ -223,17 +114,6 @@ class DataCleaner:
         return df
 
     def _validate_data_types(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Ensure all columns have correct data types for analysis.
-
-        Business Reason:
-        ---------------
-        Wrong data types break mathematical operations and aggregations.
-        For example:
-        - Can't sum revenue if it's stored as text
-        - Can't calculate average order value
-        - Can't perform time-series analysis
-        """
         self._log("Validating data types...")
 
         numeric_cols = ['Quantity', 'Price', 'Revenue']
@@ -249,23 +129,6 @@ class DataCleaner:
         return df
 
     def _handle_outliers(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Identify and handle extreme outliers in business metrics.
-
-        Business Reason:
-        ---------------
-        Extreme outliers can indicate:
-        1. Data entry errors (e.g., extra zero added to quantity)
-        2. Fraudulent transactions
-        3. System glitches
-
-        However, some outliers are legitimate (bulk orders, enterprise deals).
-
-        Strategy:
-        - Flag values beyond 3 standard deviations
-        - Review but don't automatically remove
-        - Log for manual review by business team
-        """
         self._log("Checking for outliers...")
 
         for col in ['Quantity', 'Price', 'Revenue']:
@@ -280,16 +143,5 @@ class DataCleaner:
         return df
 
     def _log(self, message: str):
-        """
-        Add a message to the cleaning log.
-
-        Business Purpose:
-        ----------------
-        Maintains an audit trail of all data transformations.
-        Critical for:
-        - Data governance
-        - Troubleshooting analysis discrepancies
-        - Compliance and reporting standards
-        """
         self.cleaning_log.append(message)
         print(f"[DataCleaner] {message}")
