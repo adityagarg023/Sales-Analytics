@@ -1,24 +1,9 @@
-"""
-Extended Sample Data Generator
-==============================
-Generates a realistic sales dataset with ~2 years of data for robust analysis.
-
-This script creates a dataset with:
-- 24 months of historical data
-- Multiple products and categories
-- Regional variations
-- Intentional data quality issues (for cleaning demonstration)
-- Seasonal patterns
-- Growth trend
-"""
-
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import random
 
 def generate_extended_sample_data(output_file='sales_data_extended.csv'):
-    """Generate extended sample dataset."""
 
     np.random.seed(42)
     random.seed(42)
