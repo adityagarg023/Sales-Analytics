@@ -1,26 +1,3 @@
-"""
-Sales Forecasting Module
-=========================
-Implements explainable time-series forecasting for sales prediction.
-
-Business Purpose:
-- Predict future sales for inventory planning
-- Support budget allocation decisions
-- Identify growth/decline trends early
-- Enable proactive business strategy
-
-Philosophy:
-Simple, explainable models > Complex black boxes
-Business stakeholders must understand HOW predictions are made.
-
-Forecasting Methods Implemented:
-1. Moving Average → Simple, good for stable data
-2. Exponential Smoothing → Weighted average, recent data matters more
-3. ARIMA → Statistical model, captures trends and patterns
-
-Author: Data Analytics Team
-"""
-
 import pandas as pd
 import numpy as np
 import warnings
@@ -32,48 +9,13 @@ warnings.filterwarnings('ignore')
 
 
 class SalesForecaster:
-    """
-    Time-series forecasting engine for sales prediction.
-
-    Methodology:
-    -----------
-    1. Aggregate data to monthly level (reduces noise)
-    2. Choose appropriate forecasting method
-    3. Train on historical data
-    4. Generate predictions with confidence intervals
-    5. Explain results in business terms
-    """
 
     def __init__(self, df: pd.DataFrame):
-        """
-        Initialize forecaster with sales data.
-
-        Parameters:
-        -----------
-        df : pd.DataFrame
-            Cleaned sales data with Order_Date column
-        """
         self.df = df
         self.monthly_revenue = None
         self.forecast_results = None
 
     def prepare_time_series(self) -> pd.Series:
-        """
-        Prepare monthly revenue time series for forecasting.
-
-        Business Reason:
-        ---------------
-        Daily data is too noisy for reliable forecasting.
-        Monthly aggregation:
-        - Smooths out daily fluctuations
-        - Reveals underlying trends
-        - Matches business planning cycles (monthly targets)
-
-        Returns:
-        --------
-        pd.Series
-            Monthly revenue time series, indexed by period
-        """
         self.df['Order_Date'] = pd.to_datetime(self.df['Order_Date'])
         self.df['Year_Month'] = self.df['Order_Date'].dt.to_period('M')
 
@@ -82,40 +24,6 @@ class SalesForecaster:
         return self.monthly_revenue
 
     def moving_average_forecast(self, window: int = 3, periods: int = 6) -> Dict:
-        """
-        Simple Moving Average forecasting.
-
-        How It Works:
-        ------------
-        Average of last N months predicts next month.
-        Example: If last 3 months averaged $100K, forecast $100K/month.
-
-        When to Use:
-        -----------
-        - Stable, non-trending data
-        - Quick estimates needed
-        - Baseline comparison
-
-        Limitations:
-        -----------
-        - Doesn't capture trends (growth/decline)
-        - Lags behind actual changes
-        - Equally weights all periods in window
-
-        Parameters:
-        -----------
-        window : int
-            Number of historical periods to average (default: 3)
-        periods : int
-            Number of future periods to forecast (default: 6)
-
-        Returns:
-        --------
-        Dict containing:
-        - Predictions
-        - Method explanation
-        - Confidence level
-        """
         if self.monthly_revenue is None:
             self.prepare_time_series()
 
@@ -157,40 +65,6 @@ class SalesForecaster:
         }
 
     def exponential_smoothing_forecast(self, periods: int = 6) -> Dict:
-        """
-        Exponential Smoothing forecasting.
-
-        How It Works:
-        ------------
-        Weighted average where recent months matter MORE than older months.
-        Automatically adjusts weights to minimize prediction error.
-
-        When to Use:
-        -----------
-        - Data with trends (growth/decline)
-        - Recent patterns more relevant than old patterns
-        - Medium-term forecasting (3-12 months)
-
-        Advantages Over Moving Average:
-        ------------------------------
-        - Captures trends and seasonality
-        - Recent data weighted more heavily
-        - More responsive to changes
-
-        Mathematical Basis:
-        ------------------
-        Prediction = α × (Last Actual) + (1-α) × (Last Prediction)
-        where α = smoothing parameter (auto-calculated)
-
-        Parameters:
-        -----------
-        periods : int
-            Number of future periods to forecast
-
-        Returns:
-        --------
-        Dict containing predictions and confidence intervals
-        """
         if self.monthly_revenue is None:
             self.prepare_time_series()
 
@@ -248,57 +122,6 @@ class SalesForecaster:
             }
 
     def arima_forecast(self, order: Tuple[int, int, int] = (1, 1, 1), periods: int = 6) -> Dict:
-        """
-        ARIMA (AutoRegressive Integrated Moving Average) forecasting.
-
-        How It Works:
-        ------------
-        Statistical model that combines:
-        - AR (AutoRegressive): Uses past values to predict future
-        - I (Integrated): Removes trends by differencing
-        - MA (Moving Average): Uses past prediction errors
-
-        When to Use:
-        -----------
-        - Complex patterns with trends and cycles
-        - Long-term forecasting
-        - When high accuracy is critical
-
-        ARIMA Parameters Explained:
-        --------------------------
-        (p, d, q) order:
-        - p: Number of past values used (AutoRegressive)
-        - d: Differencing level to remove trends (Integration)
-        - q: Number of past errors used (Moving Average)
-
-        Example: ARIMA(1,1,1)
-        - Uses 1 past value
-        - Differences data once to remove trend
-        - Uses 1 past prediction error
-
-        Advantages:
-        ----------
-        - Handles complex patterns
-        - Statistical foundation
-        - Well-established method
-
-        Limitations:
-        -----------
-        - Requires more data (12+ months)
-        - More complex to explain
-        - Parameter tuning needed
-
-        Parameters:
-        -----------
-        order : Tuple[int, int, int]
-            ARIMA order (p, d, q)
-        periods : int
-            Forecast horizon
-
-        Returns:
-        --------
-        Dict containing predictions with confidence intervals
-        """
         if self.monthly_revenue is None:
             self.prepare_time_series()
 
@@ -354,39 +177,6 @@ class SalesForecaster:
             }
 
     def generate_forecast(self, method: str = 'exponential_smoothing', periods: int = 6) -> Dict:
-        """
-        Generate forecast using specified method.
-
-        Business Decision Guide:
-        -----------------------
-        Choose method based on your data and needs:
-
-        Moving Average:
-        - Stable sales with no clear trend
-        - Quick estimate needed
-        - Conservative planning
-
-        Exponential Smoothing:
-        - Growing or declining sales
-        - Recent patterns more important
-        - Standard business forecasting
-
-        ARIMA:
-        - Complex patterns
-        - High accuracy required
-        - Sufficient historical data (12+ months)
-
-        Parameters:
-        -----------
-        method : str
-            'moving_average', 'exponential_smoothing', or 'arima'
-        periods : int
-            Forecast horizon (typically 3-6 months)
-
-        Returns:
-        --------
-        Dict containing forecast results and explanations
-        """
         self.prepare_time_series()
 
         if method == 'moving_average':
@@ -409,17 +199,6 @@ class SalesForecaster:
         return result
 
     def get_forecast_summary(self) -> Dict:
-        """
-        Get business-friendly summary of forecast results.
-
-        Returns:
-        --------
-        Dict containing:
-        - Total predicted revenue
-        - Average monthly prediction
-        - Expected growth/decline
-        - Risk assessment
-        """
         if self.forecast_results is None or 'error' in self.forecast_results:
             return {'error': 'No valid forecast available'}
 
@@ -448,20 +227,6 @@ class SalesForecaster:
 
     @staticmethod
     def _interpret_forecast(pct_change: float, trend: str) -> str:
-        """
-        Provide business interpretation of forecast results.
-
-        Parameters:
-        -----------
-        pct_change : float
-            Percentage change from historical average
-        trend : str
-            Overall trend direction
-
-        Returns:
-        --------
-        str : Business interpretation and recommendations
-        """
         if trend == 'GROWTH':
             return (
                 f"Sales forecast shows {abs(pct_change):.1f}% growth. "
