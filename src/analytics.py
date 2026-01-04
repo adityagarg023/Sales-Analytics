@@ -1,66 +1,14 @@
-"""
-Analytics Module
-================
-Performs core business analysis on sales data.
-
-Business Purpose:
-- Extract actionable insights from sales data
-- Identify trends, patterns, and anomalies
-- Support data-driven decision making
-
-Analysis Categories:
-1. Sales Performance → Overall business health
-2. Product Analysis → Product strategy & inventory
-3. Regional Analysis → Market expansion & resource allocation
-4. Time-Series Analysis → Forecasting & seasonality
-5. Customer Analysis → Segmentation & retention
-
-Author: Data Analytics Team
-"""
-
 import pandas as pd
 import numpy as np
 from typing import Dict, Tuple
 
 
 class SalesAnalytics:
-    """
-    Comprehensive sales analysis engine for business intelligence.
-
-    Each analysis method answers specific business questions and
-    provides insights that directly inform decisions.
-    """
 
     def __init__(self, df: pd.DataFrame):
-        """
-        Initialize analytics engine with processed sales data.
-
-        Parameters:
-        -----------
-        df : pd.DataFrame
-            Cleaned and feature-engineered sales data
-        """
         self.df = df
 
     def analyze_sales_performance(self) -> Dict:
-        """
-        Analyze overall sales performance metrics.
-
-        Business Questions:
-        ------------------
-        1. How much revenue are we generating?
-        2. What's our order volume trend?
-        3. What's the average transaction value?
-        4. Are we growing or declining?
-
-        Returns:
-        --------
-        Dict containing:
-        - Total revenue
-        - Total orders
-        - Average order value
-        - Growth trends
-        """
         performance = {
             'total_revenue': self.df['Revenue'].sum(),
             'total_orders': len(self.df),
@@ -80,31 +28,6 @@ class SalesAnalytics:
         return performance
 
     def analyze_products(self) -> Dict:
-        """
-        Analyze product performance and contribution.
-
-        Business Questions:
-        ------------------
-        1. Which products generate most revenue?
-        2. Which products sell most volume?
-        3. Which products underperform?
-        4. What's our product mix?
-
-        Insights Drive:
-        --------------
-        - Inventory planning
-        - Marketing budget allocation
-        - Product discontinuation decisions
-        - Pricing strategy
-
-        Returns:
-        --------
-        Dict containing:
-        - Top products by revenue
-        - Top products by volume
-        - Worst performers
-        - Product concentration risk
-        """
         product_revenue = self.df.groupby('Product').agg({
             'Revenue': 'sum',
             'Quantity': 'sum',
@@ -132,26 +55,6 @@ class SalesAnalytics:
         }
 
     def analyze_categories(self) -> Dict:
-        """
-        Analyze category-level performance.
-
-        Business Questions:
-        ------------------
-        1. Which categories drive revenue?
-        2. Which categories have growth potential?
-        3. Should we expand/contract category offerings?
-
-        Strategic Impact:
-        ----------------
-        - Category expansion decisions
-        - Resource allocation across categories
-        - Vendor negotiations
-        - Assortment planning
-
-        Returns:
-        --------
-        Dict containing category metrics and rankings
-        """
         category_metrics = self.df.groupby('Category').agg({
             'Revenue': ['sum', 'mean', 'count'],
             'Quantity': 'sum'
@@ -168,27 +71,6 @@ class SalesAnalytics:
         }
 
     def analyze_regions(self) -> Dict:
-        """
-        Analyze regional sales performance.
-
-        Business Questions:
-        ------------------
-        1. Which regions generate most revenue?
-        2. Where should we expand operations?
-        3. Which regions need support?
-        4. Are there regional preference patterns?
-
-        Operational Impact:
-        ------------------
-        - Warehouse location decisions
-        - Sales team allocation
-        - Regional marketing campaigns
-        - Expansion planning
-
-        Returns:
-        --------
-        Dict containing regional performance metrics
-        """
         regional_metrics = self.df.groupby('Region').agg({
             'Revenue': ['sum', 'mean'],
             'Order_ID': 'count',
@@ -206,31 +88,6 @@ class SalesAnalytics:
         }
 
     def analyze_time_trends(self) -> Dict:
-        """
-        Analyze temporal patterns and trends.
-
-        Business Questions:
-        ------------------
-        1. Are sales growing or declining?
-        2. Are there seasonal patterns?
-        3. Which months/quarters perform best?
-        4. What's our growth trajectory?
-
-        Forecasting Impact:
-        ------------------
-        - Revenue forecasting
-        - Inventory planning
-        - Cash flow projections
-        - Hiring decisions
-
-        Returns:
-        --------
-        Dict containing:
-        - Monthly trends
-        - Yearly comparisons
-        - Seasonality indicators
-        - Growth rates
-        """
         monthly_trends = self.df.groupby('Year_Month').agg({
             'Revenue': 'sum',
             'Order_ID': 'count',
@@ -267,26 +124,6 @@ class SalesAnalytics:
         }
 
     def analyze_customers(self) -> Dict:
-        """
-        Analyze customer segments and behavior.
-
-        Business Questions:
-        ------------------
-        1. Which customer segments are most valuable?
-        2. What's the revenue distribution by segment?
-        3. Which segments have highest AOV?
-
-        Marketing Impact:
-        ----------------
-        - Customer acquisition strategy
-        - Loyalty program design
-        - Personalized marketing
-        - Segment-specific promotions
-
-        Returns:
-        --------
-        Dict containing customer segment analysis
-        """
         customer_metrics = self.df.groupby('Customer_Type').agg({
             'Revenue': ['sum', 'mean'],
             'Order_ID': 'count',
@@ -304,18 +141,6 @@ class SalesAnalytics:
         }
 
     def get_full_analysis_report(self) -> Dict:
-        """
-        Generate comprehensive business analysis report.
-
-        Returns:
-        --------
-        Dict containing all analysis results
-
-        Business Use:
-        ------------
-        This report provides a complete view of business performance
-        for executive dashboards, board presentations, and strategic planning.
-        """
         return {
             'sales_performance': self.analyze_sales_performance(),
             'product_analysis': self.analyze_products(),
