@@ -1,7 +1,5 @@
 # Sales Analytics & Forecasting Dashboard
 
-**A production-ready, resume-worthy data analytics project demonstrating end-to-end business intelligence capabilities.**
-
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28-red)
 ![Pandas](https://img.shields.io/badge/Pandas-2.0-green)
@@ -26,9 +24,9 @@
 
 ## Project Overview
 
-This project is a **comprehensive Sales Analytics & Forecasting Dashboard** built to demonstrate industry-level data analysis skills. It transforms raw, messy sales data into actionable business insights through data cleaning, feature engineering, statistical analysis, and predictive forecasting.
+This project is a **comprehensive Sales Analytics & Forecasting Dashboard**. It transforms raw, messy sales data into actionable business insights through data cleaning, feature engineering, statistical analysis, and predictive forecasting.
 
-**Key Differentiator:** Unlike tutorial-level projects, this dashboard handles real-world data quality issues and provides explainable, business-focused insights that drive decision-making.
+**Key Differentiator:** This dashboard handles real-world data quality issues and provides explainable, business-focused insights that drive decision-making.
 
 ---
 
@@ -74,8 +72,6 @@ Businesses need to:
 | **Streamlit** | Rapid dashboard development, no frontend coding needed |
 | **Matplotlib/Seaborn** | Professional visualizations, publication-ready |
 | **Statsmodels** | Statistical rigor, explainable forecasting models |
-
-**No Deep Learning** - Intentionally avoided to focus on interpretability and fundamental analytics skills.
 
 ---
 
