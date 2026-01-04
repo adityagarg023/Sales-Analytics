@@ -1,28 +1,9 @@
-"""
-Data Loader Module
-==================
-Handles loading sales data from CSV/Excel files with error handling and validation.
-
-Business Purpose:
-- Ensures data can be loaded reliably from various file formats
-- Provides clear error messages when data loading fails
-- Validates that required columns exist in the dataset
-
-Author: Data Analytics Team
-"""
-
 import pandas as pd
 import streamlit as st
 from typing import Optional
 
 
 class DataLoader:
-    """
-    Responsible for loading and initial validation of sales data.
-
-    This class handles the technical aspects of reading files while
-    ensuring business-critical columns are present.
-    """
 
     REQUIRED_COLUMNS = [
         'Order_ID', 'Order_Date', 'Product', 'Category',
@@ -31,26 +12,6 @@ class DataLoader:
 
     @staticmethod
     def load_data(file_path: str = None, uploaded_file=None) -> Optional[pd.DataFrame]:
-        """
-        Load sales data from a file path or uploaded file object.
-
-        Parameters:
-        -----------
-        file_path : str, optional
-            Path to the CSV/Excel file on disk
-        uploaded_file : UploadedFile, optional
-            Streamlit uploaded file object
-
-        Returns:
-        --------
-        pd.DataFrame or None
-            Loaded dataframe if successful, None otherwise
-
-        Business Impact:
-        ---------------
-        Failed data loading means no analysis can be performed.
-        This function provides clear feedback about what went wrong.
-        """
         try:
             if uploaded_file is not None:
                 if uploaded_file.name.endswith('.csv'):
@@ -88,24 +49,6 @@ class DataLoader:
 
     @staticmethod
     def _validate_columns(df: pd.DataFrame) -> None:
-        """
-        Validate that all required business columns exist in the dataset.
-
-        Parameters:
-        -----------
-        df : pd.DataFrame
-            The loaded dataframe to validate
-
-        Raises:
-        -------
-        ValueError
-            If required columns are missing
-
-        Business Impact:
-        ---------------
-        Missing columns prevent business analysis. This validation
-        ensures we catch structural issues early before processing.
-        """
         missing_cols = set(DataLoader.REQUIRED_COLUMNS) - set(df.columns)
 
         if missing_cols:
@@ -116,24 +59,6 @@ class DataLoader:
 
     @staticmethod
     def get_data_summary(df: pd.DataFrame) -> dict:
-        """
-        Generate a quick summary of the loaded dataset.
-
-        Parameters:
-        -----------
-        df : pd.DataFrame
-            The dataset to summarize
-
-        Returns:
-        --------
-        dict
-            Summary statistics including row count, date range, etc.
-
-        Business Impact:
-        ---------------
-        Provides immediate visibility into data scope and coverage,
-        helping analysts understand what time period and volume they're working with.
-        """
         summary = {
             'total_records': len(df),
             'columns': list(df.columns),
