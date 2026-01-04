@@ -1,17 +1,3 @@
-"""
-Sales Analytics & Forecasting Dashboard
-========================================
-Interactive business intelligence dashboard for sales analysis and prediction.
-
-Purpose:
-- Provide real-time sales insights
-- Enable data-driven decision making
-- Forecast future sales trends
-- Support strategic planning
-
-Author: Data Analytics Team
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
