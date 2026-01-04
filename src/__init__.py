@@ -1,19 +1,5 @@
-"""
-Sales Analytics & Forecasting Dashboard - Source Package
-========================================================
-
-This package contains all core modules for sales data analysis and forecasting.
-
-Modules:
-- data_loader: Data loading and validation
-- data_cleaner: Data quality and cleaning operations
-- feature_engineer: Feature creation and transformation
-- analytics: Business intelligence and analysis
-- forecasting: Time-series forecasting methods
-"""
-
 __version__ = "1.0.0"
-__author__ = "Data Analytics Team"
+__author__ = "Aditya Garg"
 
 from .data_loader import DataLoader
 from .data_cleaner import DataCleaner
