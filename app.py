@@ -16,7 +16,7 @@ from src.analytics import SalesAnalytics
 from src.forecasting import SalesForecaster
 
 st.set_page_config(
-    page_title="Sales Analytics Dashboard",
+    page_title="Sales Analyzer",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -41,7 +41,7 @@ def load_and_process_data(file_source):
         cleaner = DataCleaner()
         df_clean, cleaning_log = cleaner.clean_data(df)
 
-        with st.expander("📋 Data Cleaning Log"):
+        with st.expander("Data Cleaning Log"):
             for log in cleaning_log:
                 st.text(log)
 
@@ -53,7 +53,7 @@ def load_and_process_data(file_source):
 
 def display_overview_metrics(df):
     """Display key performance indicators."""
-    st.header("📈 Executive Summary")
+    st.header("Executive Summary")
 
     metrics = FeatureEngineer.create_aggregated_metrics(df)
 
@@ -99,7 +99,7 @@ def display_overview_metrics(df):
 
 def display_sales_performance(analytics):
     """Display sales performance analysis."""
-    st.header("💰 Sales Performance Analysis")
+    st.header("Sales Performance Analysis")
 
     performance = analytics.analyze_sales_performance()
 
@@ -126,16 +126,16 @@ def display_sales_performance(analytics):
             st.metric("Month-over-Month Growth", f"{mom_growth:.2f}%")
 
             if mom_growth > 5:
-                st.success("🚀 Strong growth momentum!")
+                st.success("Strong growth momentum!")
             elif mom_growth < -5:
-                st.warning("⚠️ Declining trend - action needed")
+                st.warning("Declining trend - action needed")
             else:
-                st.info("📊 Stable performance")
+                st.info("Stable performance")
 
 
 def display_product_analysis(analytics):
     """Display product performance analysis."""
-    st.header("🏷️ Product Performance")
+    st.header("Product Performance")
 
     product_data = analytics.analyze_products()
 
@@ -183,7 +183,7 @@ def display_product_analysis(analytics):
 
 def display_regional_analysis(analytics):
     """Display regional performance analysis."""
-    st.header("🗺️ Regional Performance")
+    st.header("Regional Performance")
 
     regional_data = analytics.analyze_regions()
     regional_df = pd.DataFrame(regional_data['regional_performance']).T
@@ -209,7 +209,7 @@ def display_regional_analysis(analytics):
 
 def display_time_trends(analytics, df):
     """Display time-based trend analysis."""
-    st.header("📅 Time-Based Trends")
+    st.header("Time-Based Trends")
 
     trends = analytics.analyze_time_trends()
 
@@ -247,7 +247,7 @@ def display_time_trends(analytics, df):
 
 def display_forecasting(df):
     """Display sales forecasting section."""
-    st.header("🔮 Sales Forecasting")
+    st.header("Sales Forecasting")
 
     st.markdown("""
     ### About Forecasting Methods
@@ -304,9 +304,9 @@ def display_forecasting(df):
             )
 
         if 'error' in result:
-            st.error(f"❌ {result['error']}: {result['message']}")
+            st.error(f"{result['error']}: {result['message']}")
         else:
-            st.success(f"✅ Forecast generated using {result['method']}")
+            st.success(f"Forecast generated using {result['method']}")
 
             col1, col2 = st.columns([2, 1])
 
@@ -410,10 +410,10 @@ def display_forecasting(df):
 def main():
     """Main dashboard application."""
 
-    st.title("📊 Sales Analytics & Forecasting Dashboard")
+    st.title("Sales Analytics & Forecasting Dashboard")
     st.markdown("### Real-time Business Intelligence for Data-Driven Decisions")
 
-    st.sidebar.title("⚙️ Dashboard Controls")
+    st.sidebar.title("Dashboard Controls")
     st.sidebar.markdown("---")
 
     data_source = st.sidebar.radio(
@@ -430,7 +430,7 @@ def main():
         )
 
         if uploaded_file is None:
-            st.info("👈 Please upload a sales data file to begin analysis")
+            st.info("Please upload a sales data file to begin analysis")
             st.markdown("""
             ### Required Columns:
             - Order_ID
@@ -506,12 +506,12 @@ def main():
     analytics = SalesAnalytics(df_filtered)
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "📈 Overview",
-        "💰 Sales Performance",
-        "🏷️ Products",
-        "🗺️ Regions",
-        "📅 Time Trends",
-        "🔮 Forecasting"
+        "Overview",
+        "Sales Performance",
+        "Products",
+        "Regions",
+        "Time Trends",
+        "Forecasting"
     ])
 
     with tab1:
