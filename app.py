@@ -418,7 +418,7 @@ def main():
 
     data_source = st.sidebar.radio(
         "Data Source",
-        ["Use Sample Data", "Upload Your Data"],
+        ["Upload Your Data"],
         help="Choose to use provided sample data or upload your own CSV/Excel file"
     )
 
@@ -446,8 +446,6 @@ def main():
             return
 
         file_source = uploaded_file
-    else:
-        file_source = "data/sales_data_sample.csv"
 
     df_processed, df_raw, cleaning_log = load_and_process_data(file_source)
 
@@ -531,25 +529,6 @@ def main():
 
     with tab6:
         display_forecasting(df_filtered)
-
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("### About")
-    st.sidebar.info("""
-    **Sales Analytics Dashboard**
-
-    Built with:
-    - Python
-    - Streamlit
-    - Pandas & NumPy
-    - Matplotlib & Seaborn
-    - Statsmodels
-
-    Features:
-    - Real-time data analysis
-    - Interactive filtering
-    - Sales forecasting
-    - Business insights
-    """)
 
 
 if __name__ == "__main__":
