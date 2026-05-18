@@ -36,13 +36,13 @@ class DataCleaner:
 
             invalid_dates = df['Order_Date'].isna().sum()
             if invalid_dates > 0:
-                self._log(f"⚠️  Found {invalid_dates} invalid dates - these orders will be removed")
+                self._log(f"Found {invalid_dates} invalid dates - these orders will be removed")
                 df = df.dropna(subset=['Order_Date'])
 
             df['Order_Date'] = df['Order_Date'].dt.date
 
         except Exception as e:
-            self._log(f"❌ Error in date standardization: {str(e)}")
+            self._log(f"Error in date standardization: {str(e)}")
 
         return df
 
@@ -137,7 +137,7 @@ class DataCleaner:
             outliers = ((df[col] - mean).abs() > 3 * std).sum()
 
             if outliers > 0:
-                self._log(f"  ⚠️  Found {outliers} potential outliers in {col}")
+                self._log(f"    Found {outliers} potential outliers in {col}")
                 self._log(f"     These may be legitimate bulk orders - review manually")
 
         return df
