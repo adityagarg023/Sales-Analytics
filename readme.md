@@ -235,17 +235,6 @@ If uploading your own data, ensure it has these columns:
 | **Validate Data Types** | Ensure mathematical operations work correctly | Convert to appropriate types |
 | **Flag Outliers** | Identify potential errors or unusual orders | Log orders >3 standard deviations |
 
-**Example Cleaning Decision:**
-
-```python
-# Missing Revenue: Recalculate instead of removing
-# WHY: Order is valid, we can recover the data
-df.loc[df['Revenue'].isna(), 'Revenue'] = df['Quantity'] * df['Price']
-
-# Missing Quantity: Must remove
-# WHY: Cannot determine order value, data is unrecoverable
-df = df.dropna(subset=['Quantity'])
-```
 
 **Output:** Clean dataset + detailed audit log of all changes.
 
@@ -265,21 +254,6 @@ df = df.dropna(subset=['Quantity'])
 | Order Value Tier | Which orders are high-value? |
 | Product Revenue Rank | Which products are top performers? |
 | Category Revenue Share | How much does each category contribute? |
-
-**Example:**
-
-```python
-# Business Question: "What's our average order value?"
-avg_revenue = df['Revenue'].mean()
-df['AOV'] = avg_revenue
-
-# Business Question: "How do we segment orders by value?"
-df['Order_Value_Tier'] = pd.cut(
-    df['Revenue'],
-    bins=[0, avg_revenue*0.5, avg_revenue, avg_revenue*2, inf],
-    labels=['Low', 'Medium', 'High', 'Premium']
-)
-```
 
 ---
 
