@@ -183,9 +183,8 @@ Raw Data → Data Loading → Data Cleaning → Feature Engineering → Analysis
    - Open your browser to: `http://localhost:8501`
    - The dashboard should load automatically
 
-3. **Choose Data Source**
-   - **Use Sample Data** - Pre-loaded sample dataset with intentional data quality issues
-   - **Upload Your Data** - Upload your own CSV/Excel file
+3. **Upload Your Data**
+   - Upload your own CSV/Excel file
 
 ### Data Requirements
 
